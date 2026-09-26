@@ -1,0 +1,46 @@
+name: ✨ Feature request
+description: Suggest an improvement to a tool, or a new tool.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Tool
+      options:
+        - New tool
+        - Audio Editor
+        - Video Editor
+        - Image Editor
+        - PDF to Text
+        - Markdown to PDF
+        - QR Code Generator
+        - Whiteboard
+        - Site (home, sidebar, settings, storage)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      placeholder: When I annotate screenshots I often need numbered markers…
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: What you'd like to happen. Mock-ups are welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: browser-only
+    attributes:
+      label: Constraints
+      options:
+        - label: This can work fully in the browser (no server, no upload).

@@ -1,0 +1,66 @@
+name: Release
+
+# Every push to main becomes a release. The bump level comes from the
+# Conventional Commit messages since the last tag — see scripts/release.mjs.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      level:
+        description: "Force a bump level (leave empty to derive it from commits)"
+        required: false
+        type: choice
+        options: ["", patch, minor, major]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build (must pass before anything is tagged)
+        run: pnpm build
+
+      - name: Bump version and write changelog
+        id: release
+        run: node scripts/release.mjs ${{ inputs.level }}
+
+      - name: Commit and tag
+        if: steps.release.outputs.version != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json CHANGELOG.md
+          git commit -m "chore(release): v${{ steps.release.outputs.version }} [skip ci]"
+          git tag "v${{ steps.release.outputs.version }}"
+          git push origin HEAD:main --follow-tags
+
+      - name: Publish GitHub release
+        if: steps.release.outputs.version != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.release.outputs.version }}
+          name: v${{ steps.release.outputs.version }}
+          body_path: RELEASE_NOTES.md
+          make_latest: "true"

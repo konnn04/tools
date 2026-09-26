@@ -1,0 +1,67 @@
+name: 🐛 Bug report
+description: Something doesn't work the way it should.
+title: "[Bug]: "
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Everything runs in your browser, so the browser and version matter a lot.
+        Please don't attach private files — a small sample that reproduces the problem is best.
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Tool
+      options:
+        - Audio Editor
+        - Video Editor
+        - Image Editor
+        - PDF to Text
+        - Markdown to PDF
+        - QR Code Generator
+        - Whiteboard
+        - Site (home, sidebar, settings, storage)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+      placeholder: I imported an MP3, pressed Export → MP3, and the download never started.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      placeholder: Chrome 140 on Windows 11
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Konnn Tools version
+      description: Shown in the sidebar → About.
+      placeholder: 0.1.0
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console errors
+      description: Open DevTools (F12) → Console and paste any red errors.
+      render: shell
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or recordings
