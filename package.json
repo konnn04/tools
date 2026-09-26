@@ -1,6 +1,6 @@
 {
   "name": "konnn-tools",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Konnn Tools — free online tools that run entirely in your browser: audio, video and image editors, PDF to text (OCR), Markdown to PDF, QR codes and a whiteboard.",
   "private": true,
   "author": {
